@@ -1,6 +1,7 @@
 <!doctype html>
-<html lang="en">
+<!--:set foldmethod=marker-->
 
+<html lang="en">
   <!-- HEAD BEGIN {{{-->
   <head>
 
@@ -15,7 +16,7 @@
     <style>
 
       /* .*universial-box-sizing {{{*/
-      *{
+      * {
         /*COMMENT: 
           content-box: Default. 
           The width and height properties (and min/max properties) 
@@ -23,7 +24,7 @@
          */
         /*box-sizing:content-box;*/
         /*COMMENT: 
-          border-box: Normally prefered.
+          border-box: Normally preferred.
           The width and height properties (and min/max properties) 
           includes content, padding and border.
           inherit: inherit from parent element
@@ -33,7 +34,7 @@
       /*}}}*/
 
       /* html {{{*/
-      html{
+      html {
         /*COMMENT: 
           default or basis font size is 16px,
           it is the basis for root em or rem unit*/
@@ -44,30 +45,37 @@
       /* body {{{*/
       body{
         /*COMMENT:*/
-        /*font-family: Arial, Helvetica, sans-serif;*/
-        /*margin:0;*/
+        font-family: Arial, Helvetica, sans-serif;
+        /*COMMENT: 
+          box model: content, padding, border, margin
+          margin:0; all four margins are 0, which is the default.
+         */
+        margin:0;
       }
       /*}}}*/
 
       /* .header {{{*/
-      .header{
+      .header {
         /*COMMENT: width style color*/
-        border: 2px solid rgba(50,50,50,100);
-        /*COMMENT: -top -right -bottom -left*/
-        border-bottom: 6px double rgba(150,150,150,100);
+        border: 25px solid rgba(50,50,50,100);
         /*COMMENT: rounded corners*/
-        border-radius: 5px;
+        border-radius: 15px;
       }
       /*}}}*/
 
       /* .header_top {{{*/
-      .header_top{
+      .header_top {
         /*COMMENT:red(0-255),green(0-255),blue(0-255),opacity(0-100)*/
         background: rgba(50,50,150,70);
-        /*COMMENT: -top, -right, -bottom, -left*/
-        /*padding: 80px 80px 80px 80px;*/    
-        /*padding: 80px;*/ /*equivalent for all directions*/
-        padding: 10%; /*10% of box*/
+        /*COMMENT: -top -right -bottom -left*/
+        border-bottom: 45px double rgba(150,150,150,100);
+        /*COMMENT: 
+          -top, -right, -bottom, -left
+          padding: 80px 80px 80px 80px;    
+          padding: 80px; equivalent for all directions
+          padding: 10%; 10% of parent box.
+        */
+        padding: 10%;
         /*COMMENT: right, center, left*/
         text-align: center;
         /*COMMENT: Text color*/
@@ -76,76 +84,270 @@
       /*}}}*/
 
       /* .header_navigation {{{*/
-      .header_navigation{
+      .header_navigation {
         /*COMMENT:red(0-255),green(0-255),blue(0-255),opacity(0-100)*/
-        background-color: rgba(50,50,50,100);
-        /*COMMENT:*/
-        overflow: hidden;
-        /*COMMENT:*/
-        position: sticky;
-        /*COMMENT:*/
+        background-color: rgba(60,60,60,100);
+        /*COMMENT:
+          overflow-x, overflow-y
+          visible: Default.
+            The overflow is not clipped. 
+            It renders outside the element's box.
+          hidden:
+            The overflow is clipped, 
+            and the rest of the content will be invisible
+          scroll:
+            The overflow is clipped, 
+            but a scroll-bar is added to see the rest of the content
+          auto: Normally preferred.
+            If overflow is clipped, 
+            a scroll-bar should be added to see the rest of the content
+         */
+        overflow: auto;
+        /*COMMENT:
+           Reasoning behind the prefixes: 
+           -webkit for Chrome, Safari; 
+           -moz for Firefox, 
+           -o for Opera, 
+           -ms for Internet Explorer
+           While a css rule is still not standardized, 
+           some vendors/browsers still want to implement it. 
+           So some browsers know "sticky" only with the -webkit- prefix, 
+           others need the -moz- prefix. 
+           And as time proceeds the new rule is now a standard and the vendors 
+           start to implement the rule without the prefix. 
+           They do this with a different rate, 
+           so Firefox may support it earlier than chrome.
+         */
         position: -webkit-sticky;
-        /*COMMENT:*/
+        /*COMMENT:
+           static: Default.
+             Elements render in order, as they appear in the document flow.
+             Is embedded into its parent and scrolls with it. 
+             Top, Right, Bottom, Left are ignored.
+           absolute:
+             The element is positioned relative to its first positioned 
+             (not static) ancestor element.
+             Is embedded into its first positioned ancestor and scrolls with it. 
+             Top, Right, Bottom, Left are relative to 
+             first positioned ancestor's edges, i.e. a child of body.
+           fixed:
+             The element is positioned relative to the browser window.
+             Top, Right, Bottom, Left are relative to the window's edges.
+             Stays there even if page is scrolled.
+           relative: Normally preferred
+             The element is positioned relative to its normal position, 
+             Is embedded into its parent and scrolls with it. 
+             Top, Right, Bottom, Left are relative to the parents's edges.
+             so "left:20px" adds 20 pixels to the element's LEFT position
+           sticky:
+             The element is positioned based on the user's scroll position
+             it toggles between relative and fixed, depending on the scroll position. 
+             It is positioned relative until a given offset position is met 
+             in the viewport - then it "sticks" in place (like position:fixed).
+         */
+        position: sticky;
+        /*COMMENT: 
+           top, right, bottom, left
+           Places the element's edge relative to the element's edge 
+           defined with position:.
+           Do not use right and left or top and bottom in the same class.
+           Uese e.g. top and right or bottom and left.
+           auto: Default
+             Lets the browser calculate the position.
+           length:
+             Sets the left edge position in units. Negative values are allowed. 
+           percent:
+             Sets the left edge position in % of containing element. 
+             Negative values are allowed. 
+           In combination with position:sticky:
+           the sticky element sticks to the top of the page (top: 0), 
+           when you reach its scroll position.
+         */
         top: 0;
       }
-      .header_navigation a{
-        /*COMMENT: Style the navigation bar links */
+      /*}}}*/
+      
+      /* .header_navigation a {{{*/
+      .header_navigation a {
+        /*COMMENT: Style the navigation bar ankers */
+        /*COMMENT:
+           Used for sibling, list or image elements within same parent box. 
+           Also to surround e.g. an image with text. Here without float,
+           the ankers would be placed below each other.
+           Absolutely positioned elements ignores the float property.
+           none: Default. The element does not float.  
+           left:   The element floats to the left of its container   
+           right:  The element floats the right of its container
+         */
         float: left;
+        /*COMMENT:
+         inline: 	
+           Displays an element as an inline element (like <span>). 
+           Any height and width properties will have no effect 	
+         block: 	
+           Displays an element as a block element (like <p>). 
+           It starts on a new line, and takes up the whole width 	
+         contents: 	
+           Makes the container disappear, making the child elements children 
+           of the element the next level up in the DOM 	
+         flex: 	
+           Displays an element as a block-level flex container
+           flexbox: one dimensional  
+         grid: 	
+           Displays an element as a block-level grid container
+           gridbox: two dimensional  
+         inline-block: 	
+           Displays an element as an inline-level block container. 
+           The element itself is formatted as an inline element, 
+           but you can apply height and width values 	
+         inline-flex: 	
+           Displays an element as an inline-level flex container 	
+         inline-grid: 	
+           Displays an element as an inline-level grid container 	
+         inline-table: 	
+           The element is displayed as an inline-level table 	
+         list-item: 	
+           Let the element behave like a <li> element 	
+         run-in: 	
+           Displays an element as either block or inline, depending on context 	
+         table: 	
+           Let the element behave like a <table> element 	
+         table-caption: 	
+           Let the element behave like a <caption> element 	
+         table-column-group: 	
+           Let the element behave like a <colgroup> element 	
+         table-header-group: 	
+           Let the element behave like a <thead> element 	
+         table-footer-group: 	
+           Let the element behave like a <tfoot> element 	
+         table-row-group: 	
+           Let the element behave like a <tbody> element 	
+         table-cell: 	
+           Let the element behave like a <td> element 	
+         table-column: 	
+           Let the element behave like a <col> element 	
+         table-row: 	
+           Let the element behave like a <tr> element 	
+         none: 
+           The element is completely removed from the DOM.
+           Useful with javascript.
+         */
         display: block;
-        color: white;
+        /*COMMENT: -top, -right, -bottom, -left*/
+        padding: 14px 20px 14px 20px;
+        /*COMMENT: right, center, left*/
         text-align: center;
-        padding: 14px 20px;
+        /*COMMENT: Text color*/
+        color: white;
+        /*COMMENT: underline, overline, line-through*/
         text-decoration: none;
       }
 
-      /* Right-aligned link */
-      .navbar a.right {
+      .header_navigation a.right {
+        /*COMMENT: 
+          element.right means: anker with class="right"
+         */
         float: right;
       }
       
-      /* Change color on hover */
-      .navbar a:hover {
+      .header_navigation a:hover {
+        /*COMMENT: 
+           element:hover means: anker with event hover
+         */
+        /*COMMENT: #dddddd all colors with equal rgb are grey*/
         background-color: #ddd;
+        /*COMMENT: Text color*/
         color: black;
       }
       
-      /* Active/current link */
-      .navbar a.active {
-        background-color: #666;
+      .header_navigation a.active {
+        /*COMMENT: 
+          element.active means: anker with class="active"
+         */
+        /*COMMENT: #555555 all colors with equal rgb are grey*/
+        background-color: #555;
+        /*COMMENT: Text color*/
         color: white;
       }
       /*}}}*/
 
       /* .content {{{*/
-      .content{
-        /*COMMENT:*/
-
+      .content {
+        /*COMMENT:
+         flex vs grid: one dimensional vs two dimensional. 
+         */
+        display: -ms-flexbox; /* IE10 */
+        display: flex;
+        /*COMMENT:
+          wrap wraps elements to the next row in case they have a fixed
+          or minimal size. This is not the case here, instead there are
+          @media classes to wrap the columns. So, it does not seem to 
+          have any effect.
+         */
+        -ms-flex-wrap: wrap; /* IE10 */
+        flex-wrap: wrap;
+      }
+      .content .fakeimg {  
+        /*COMMENT: #555555 all colors with equal rgb are grey*/
+        background-color: #aaa;
+        width: 100%;
+        padding: 20px;
       }
       /*}}}*/
 
       /* .content_left {{{*/
-      .content_left{
-        /*COMMENT:*/
-
+      .content_left {
+        /*COMMENT:red(0-255),green(0-255),blue(0-255), Hex:#rrggbb*/
+        background-color: #f1f1f1;
+        padding: 20px;
+        /*COMMENT:
+         The flex property sets the flexible length on flexible items.
+         If the element is not a flexible item, the flex property has no effect.
+         The flex property is a shorthand property for:
+           flex-grow: 
+             A number specifying how much the item will grow 
+             relative to the rest of the flexible items
+           flex-shrink:
+             A number specifying how much the item will shrink 
+             relative to the rest of the flexible items
+           flex-basis:
+             The length of the item. 
+             Legal values: "auto", "inherit", 
+             or a number followed by "%", "px", "em" or any other length unit
+         */
+        -ms-flex: 20%; /* IE10 */
+        flex: 20%;
       }
       /*}}}*/
 
       /* .content_middle {{{*/
-      .content_middle{
-        /*COMMENT:*/
-
+      .content_middle {
+        background-color: white;
+        padding: 20px;
+        /*COMMENT:
+         The flex property sets the flexible length on flexible items.
+         If the element is not a flexible item, the flex property has no effect.
+         */
+        -ms-flex: 60%; /* IE10 */
+        flex: 60%;
       }
       /*}}}*/
 
       /* .content_right {{{*/
-      .content_right{
-        /*COMMENT:*/
-
+      .content_right {
+        background-color: #f1f1f1;
+        padding: 20px;
+        /*COMMENT:
+         The flex property sets the flexible length on flexible items.
+         If the element is not a flexible item, the flex property has no effect.
+         */
+        -ms-flex: 20%; /* IE10 */
+        flex: 20%;
       }
       /*}}}*/
 
       /* .footer {{{*/
-      .footer{
+      .footer {
         /*COMMENT:red(0-255),green(0-255),blue(0-255),opacity(0-100)*/
         background: rgba(150,150,150,70);
         /*COMMENT: -top, -right, -bottom, -left*/
@@ -181,6 +383,7 @@
     </style>
 
     <link rel="stylesheet" href="Snip_a.css?v=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!--}}}STYLES END-->
 
   </head>
@@ -190,34 +393,134 @@
   <body>
 
     <!-- .header {{{-->
-    <!-- .header_top {{{-->
-    <div id="header_top" class="header, header_top">
-      <h1 id="header_h1_1">My Website</h1>
-      <p id="header_p_1">
-      A <b>cool</b> website created by qoolixiloop.
-      </p>
-    </div>
-    <!--}}}-->
+    <div class="header">
+      <!-- .header_top {{{-->
+      <div id="header_top" class="header_top">
+        <h1 id="header_h1_1">My Website</h1>
+        <p id="header_p_1">
+        A <b>cool</b> website created by qoolixiloop.
+        </p>
+      </div>
+      <!--}}}-->
 
-    <!-- .header_navigation {{{-->
-    <div id="header_navigation" class="header, header_navigation">
-      <a href="./index.html" class="active">Home</a>
-      <a href="./page_1.html">Link</a>
-      <a href="./page_2.html">Link</a>
-      <a href="./page_3.html" class="right">Link</a>
+      <!-- .header_navigation {{{-->
+      <div id="header_navigation" class="header_navigation">
+        <a href="./index.html" class="active">Home</a>
+        <a href="./page_1.html">Link</a>
+        <a href="./page_2.html">Link</a>
+        <a href="./page_3.html" class="right">Link</a>
+      </div>
+      <!--}}}-->
     </div>
-    <!--}}}-->
     <!--}}}-->
 
     <!-- .content{{{-->
+    <div class="content">
     <!-- .content_left {{{-->
+      <div class="content_left">
+        
+        <!-- Profile -->
+        <div class="w3-container">
+         <h4 class="w3-center">My Profile</h4>
+         <p class="w3-center"><img src="avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <hr>
+         <p><i class="fa fa-pencil fa-fw"></i> Engineer, ... </p>
+         <p><i class="fa fa-home fa-fw"></i> Zurich, CH</p>
+         <p><i class="fa fa-birthday-cake fa-fw"></i> June 26, 2019</p>
+        </div>
+
+        <!-- Accordion -->
+        <div class="w3-white">
+          <button onclick="myFunction('Demo1')" class="w3-button">
+            <i class="fa fa-circle-o-notch fa-fw"></i> My Groups</button>
+          <div id="Demo1" class="w3-hide w3-container">
+            <p>Some text..</p>
+          </div>
+          <button onclick="myFunction('Demo2')" class="w3-button">
+            <i class="fa fa-calendar-check-o fa-fw"></i> My Events</button>
+          <div id="Demo2" class="w3-hide w3-container">
+            <p>Some other text..</p>
+          </div>
+          <button onclick="myFunction('Demo3')" class="w3-button">
+            <i class="fa fa-users fa-fw w3-margin-right"></i> My Photos</button>
+          <div id="Demo3" class="w3-hide w3-container">
+         <div class="w3-row-padding">
+           <div class="w3-half">
+             <img src="https://raw.githubusercontent.com/qoolixiloop/qool-tmux-loop/master/pictures/tmux_showing_py.png" style="width:100%" class="w3-margin-bottom">
+           </div>
+           <div class="w3-half">
+             <img src="https://raw.githubusercontent.com/qoolixiloop/qool-tmux-loop/master/pictures/tmux_showing_py.png" style="width:100%" class="w3-margin-bottom">
+           </div>
+           <div class="w3-half">
+             <img src="https://raw.githubusercontent.com/qoolixiloop/qool-tmux-loop/master/pictures/tmux_showing_py.png" style="width:100%" class="w3-margin-bottom">
+           </div>
+           <div class="w3-half">
+             <img src="https://raw.githubusercontent.com/qoolixiloop/qool-tmux-loop/master/pictures/tmux_showing_py.png" style="width:100%" class="w3-margin-bottom">
+           </div>
+           <div class="w3-half">
+             <img src="https://raw.githubusercontent.com/qoolixiloop/qool-tmux-loop/master/pictures/tmux_showing_py.png" style="width:100%" class="w3-margin-bottom">
+           </div>
+           <div class="w3-half">
+             <img src="https://raw.githubusercontent.com/qoolixiloop/qool-tmux-loop/master/pictures/tmux_showing_py.png" style="width:100%" class="w3-margin-bottom">
+           </div>
+         </div>
+          </div>
+        </div>      
+
+
+        <!-- Interests --> 
+        <div class="w3-container">
+          <p>Interests</p>
+          <p>
+            <span class="w3-tag w3-small w3-theme-d5">News</span>
+            <span class="w3-tag w3-small w3-theme-d4">W3Schools</span>
+            <span class="w3-tag w3-small w3-theme-d3">Labels</span>
+            <span class="w3-tag w3-small w3-theme-d2">Games</span>
+            <span class="w3-tag w3-small w3-theme-d1">Friends</span>
+            <span class="w3-tag w3-small w3-theme">Games</span>
+            <span class="w3-tag w3-small w3-theme-l1">Friends</span>
+            <span class="w3-tag w3-small w3-theme-l2">Food</span>
+            <span class="w3-tag w3-small w3-theme-l3">Design</span>
+            <span class="w3-tag w3-small w3-theme-l4">Art</span>
+            <span class="w3-tag w3-small w3-theme-l5">Photos</span>
+          </p>
+        </div>
+
+
+      </div>
     <!--}}}-->
     
     <!-- .content_middle {{{-->
+      <div class="content_middle">
+        <h2>TITLE HEADING</h2>
+        <h5>Title description, Dec 7, 2017</h5>
+        <div class="fakeimg" style="height:200px;">Image</div>
+        <p>Some text..</p>
+        <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+        <br>
+        <h2>TITLE HEADING</h2>
+        <h5>Title description, Sep 2, 2017</h5>
+        <div class="fakeimg" style="height:200px;">Image</div>
+        <p>Some text..</p>
+        <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+        </p>
+      </div>
     <!--}}}-->
     
     <!-- .content_right {{{-->
+      <div class="content_right">
+        <h2>About Me</h2>
+        <h5>Photo of me:</h5>
+        <div class="fakeimg" style="height:200px;">Image</div>
+        <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+        <h3>More Text</h3>
+        <p>Lorem ipsum dolor sit ame.</p>
+        <div class="fakeimg" style="height:60px;">Image</div><br>
+        <div class="fakeimg" style="height:60px;">Image</div><br>
+        <div class="fakeimg" style="height:60px;">Image</div>
+      </div>
     <!--}}}-->
+    </div>
     <!--}}}-->
 
     <!-- .footer {{{-->
